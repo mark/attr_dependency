@@ -82,4 +82,37 @@ describe AttrDependency do
 
   end
 
+  describe :with_dependencies do
+
+    before { MyClass.my_dependency { Array } }
+
+    it "should temporarily inject dependencies" do
+      MyClass.with_dependencies(my_dependency: ->() { Hash }) do
+        MyClass.new.my_dependency.must_equal Hash
+      end
+
+      MyClass.new.my_dependency.must_equal Array
+    end
+
+    it "should work with constants" do
+      MyClass.with_dependencies(my_dependency: Hash) do
+        MyClass.new.my_dependency.must_equal Hash
+      end
+
+      MyClass.new.my_dependency.must_equal Array
+    end
+
+    it "should work with objects defined inside the block?" do
+      inside = nil
+      MyClass.with_dependencies(my_dependency: Hash) do
+        inside = MyClass.new
+      end
+
+      inside.my_dependency.must_equal Hash
+      MyClass.new.my_dependency.must_equal Array
+    end
+
+  end
+
+
 end
