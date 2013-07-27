@@ -4,17 +4,16 @@ module AttrDependency
 
   class NamespaceShadow
 
-    attr_reader :outer_shadow, :outer_name
+    attr_reader :name, :klass
 
     def initialize(dependency, root, leaf)
-      trunk         = NamespaceSplitter.trunk(dependency, root)
-      leaf_name     = NamespaceSplitter.leaf(dependency)
-      @outer_name   = NamespaceSplitter.trunk_name(dependency)
+      leaf_name = NamespaceSplitter.leaf_name(dependency)
+      trunk     = NamespaceSplitter.trunk(dependency, root)
 
-      shadows       = build_shadows(trunk, leaf_name, leaf)
-      shadows << leaf
+      shadows   = build_shadows(trunk, leaf_name, leaf)
       
-      @outer_shadow = shadows.first
+      @name     = NamespaceSplitter.trunk_name(dependency)
+      @klass    = shadows.first
     end
 
     private
@@ -27,7 +26,7 @@ module AttrDependency
         inner_class = shadow_class(klass, inner_name, inner_class)
         inner_name  = mod_name
         inner_class
-      end.reverse
+      end.reverse << leaf
     end
 
     def shadow_class(klass, const_name, const_class)
