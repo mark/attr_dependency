@@ -2,6 +2,10 @@ module AttrDependency
 
   class NamespaceSplitter
 
+    def self.leaf_name(dependency)
+      namespaces(dependency).last
+    end
+
     def self.trunk(dependency, root = Object)
       trunk      = namespaces(dependency)[0...-1]
       parent     = root
@@ -15,10 +19,6 @@ module AttrDependency
 
     def self.trunk_name(dependency)
       namespaces(dependency).first
-    end
-
-    def self.leaf(dependency)
-      namespaces(dependency).last
     end
 
     private

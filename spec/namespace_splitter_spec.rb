@@ -11,7 +11,7 @@ describe NamespaceSplitter do
   end
 
   it "should be able to get the last piece" do
-    NamespaceSplitter.leaf(OuterClass::MiddleClass::InnerClass).must_equal "InnerClass"
+    NamespaceSplitter.leaf_name(OuterClass::MiddleClass::InnerClass).must_equal "InnerClass"
   end
 
   it "should describe the trunk" do
